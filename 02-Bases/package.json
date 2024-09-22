@@ -1,0 +1,21 @@
+{
+  "name": "02-bases",
+  "version": "0.1.0",
+  "description": "Primera aplicacion real de Node",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "author": "Dennis Villavicencio",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "get-age": "^1.0.1",
+    "uuid": "^10.0.0"
+  }
+}
