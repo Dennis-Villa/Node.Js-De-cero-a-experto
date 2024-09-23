@@ -17,8 +17,9 @@
 // console.log(john);
 
 
-const { httpClientPlugin } = require('./plugins');
-const { buildGetPokemonById } = require('./js-foundation/06-promises.js');
+
+import { httpClient } from './plugins';
+import { buildGetPokemonById } from './js-foundation/06-promises';
 
 // getPokemonById(2, ( error, pokemon ) => {
 //     if ( error ) throw new Error(error);
@@ -26,7 +27,16 @@ const { buildGetPokemonById } = require('./js-foundation/06-promises.js');
 //     console.log( pokemon );
 // });
 
-const getPokemonById = buildGetPokemonById({ httpClientPlugin });
+const getPokemonById = buildGetPokemonById({ httpClient });
 const info = getPokemonById( 999 )
     .then( (pokemon) => console.log({ pokemon }))
-    .catch( (error) => console.log({ error }));
+    .catch( (error) => console.error({ error }));
+
+
+
+// import { buildLogger } from './plugins';
+
+// const logger = buildLogger('app.js');
+
+// logger.log("Hola Mundo");
+// logger.error("Esto es algo malo");

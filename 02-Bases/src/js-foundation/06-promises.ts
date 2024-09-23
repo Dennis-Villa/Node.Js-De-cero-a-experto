@@ -27,17 +27,13 @@
 // };
 
 
-const buildGetPokemonById = ({ httpClientPlugin }) => {
+export const buildGetPokemonById = ({ httpClient }: any) => {
 
-    return async( id ) => {
+    return async( id: string|number ): Promise<string> => {
         const url = `https://pokeapi.co/api/v2/pokemon/${ id }`;
     
-        const pokemon = await httpClientPlugin.get( url );
+        const pokemon = await httpClient.get( url );
 
         return pokemon.name;
     };
-}
-
-module.exports = {
-    buildGetPokemonById
 };
