@@ -18,8 +18,8 @@
 
 
 
-import { httpClient } from './plugins';
-import { buildGetPokemonById } from './js-foundation/06-promises';
+// import { httpClient } from './plugins';
+// import { buildGetPokemonById } from './js-foundation/06-promises';
 
 // getPokemonById(2, ( error, pokemon ) => {
 //     if ( error ) throw new Error(error);
@@ -27,10 +27,10 @@ import { buildGetPokemonById } from './js-foundation/06-promises';
 //     console.log( pokemon );
 // });
 
-const getPokemonById = buildGetPokemonById({ httpClient });
-const info = getPokemonById( 999 )
-    .then( (pokemon) => console.log({ pokemon }))
-    .catch( (error) => console.error({ error }));
+// const getPokemonById = buildGetPokemonById({ httpClient });
+// const info = getPokemonById( 999 )
+//     .then( (pokemon) => console.log({ pokemon }))
+//     .catch( (error) => console.error({ error }));
 
 
 
