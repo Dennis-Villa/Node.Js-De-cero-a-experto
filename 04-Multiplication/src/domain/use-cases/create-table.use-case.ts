@@ -8,14 +8,16 @@ export interface CreateTableOptions {
 }
 
 export class CreateTable implements CreateTableUseCase {
-
+ 
     constructor(){};
 
     execute( { base, limit = 10 }: CreateTableOptions ){
         let outputMessage = '';
 
         for (let index = 1; index <= limit; index++) {
-            outputMessage = outputMessage.concat(`${base} x ${index} = ${base*index} \n`);
+            outputMessage = outputMessage.concat(`${base} x ${index} = ${base*index}`);
+
+            if ( index < limit ) outputMessage += '\n';
         }
 
         return outputMessage;

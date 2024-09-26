@@ -1,5 +1,5 @@
 import { writeFileSync, mkdirSync } from 'fs';
-import { yarg } from './config/plugins/yargs.plugin';
+import { yarg } from './config/plugins/args.plugin';
 
 const createHeader = ( base: number ): string => {
     const header = `
