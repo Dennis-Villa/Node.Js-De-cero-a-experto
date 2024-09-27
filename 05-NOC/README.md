@@ -2,16 +2,19 @@
 
 El objetivo es creaar una serie de tareas usando Arquitectura Limpia con TypeScript.
 
-# dev
+## dev
 
 1. Clonar el archivo **.env.template** a **.env**.
 2. Configurar las variables de entorno en **.env**.
 
-```
-PORT=3000
+    ```.env
+    PORT=3000
 
-MAILER_EMAIL=
-MAILER_SECRET_KEY=
+    MAILER_EMAIL=
+    MAILER_SECRET_KEY=
 
-PRODUCTION=false
-```
+    PRODUCTION=false
+    ```
+
+3. Ejecutar el comando ```npm install```.
+4. Ejecutar el comando ```npm run dev```.
