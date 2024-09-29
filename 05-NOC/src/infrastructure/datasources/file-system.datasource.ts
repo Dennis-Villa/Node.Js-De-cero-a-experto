@@ -39,8 +39,12 @@ export class FileSystemDatasource implements LogDatasource {
         
         const content = fs.readFileSync( path, 'utf-8' );
 
-        const logs = content.split( '\n' ).map( 
-            log => LogEntity.fromJson( log )
+        const jsons = content.trim().split( '\n' ).filter(
+            log => log.length > 0
+        );
+
+        const logs = jsons.map( 
+            ( log ) => LogEntity.fromJson( log )
         );
 
         return logs;
@@ -49,7 +53,7 @@ export class FileSystemDatasource implements LogDatasource {
 
     async saveLog( newLog: LogEntity ): Promise<void> {
 
-        const logAsJson = `${ JSON.stringify(newLog) },\n`;
+        const logAsJson = `${ JSON.stringify(newLog) }\n`;
 
         fs.appendFileSync( this.allLogsPath, logAsJson );
         

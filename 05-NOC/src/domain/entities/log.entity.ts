@@ -32,11 +32,36 @@ export class LogEntity {
 
     static fromJson( jsonData: string ): LogEntity {
 
+        if( jsonData.length === 0 ) {
+            throw new Error( 'JSON data is empty' );
+        }
+
         const { level, message, createdAt, origin } = JSON.parse( jsonData );
 
         if( !level ) throw new Error('Level is required');
         if( !message ) throw new Error('Message is required');
         if( !createdAt ) throw new Error('Creation date is required');
+        if( !origin ) throw new Error('Origin is required');
+
+        const log = new LogEntity({ 
+            message, 
+            level,
+            createdAt: createdAt,
+            origin: origin,
+        });
+
+        return log;
+        
+    };
+
+    static fromObject( object: { [key: string]: any } ): LogEntity {
+
+        const { level, message, createdAt, origin } = object;
+
+        if( !level ) throw new Error('Level is required');
+        if( !message ) throw new Error('Message is required');
+        if( !createdAt ) throw new Error('Creation date is required');
+        if( !origin ) throw new Error('Origin is required');
 
         const log = new LogEntity({ 
             message, 
