@@ -8,6 +8,9 @@
 */**/logs/
 
 */**/*.env
+*/**/*.env.test
 
 */**/mongo/
+*/**/mongo-test/
 */**/postgres/
+*/**/postgres-test/
