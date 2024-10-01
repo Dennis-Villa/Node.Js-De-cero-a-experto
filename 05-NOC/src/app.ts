@@ -8,10 +8,10 @@ import { Server } from './presentation/server';
 
 async function main() {
 
-    await MongoDatabase.connect({
-        mongoURL: envs.MONGO_DB_URL,
-        dbName: envs.MONGO_DB_NAME,
-    });
+    // await MongoDatabase.connect({
+    //     mongoURL: envs.MONGO_DB_URL,
+    //     dbName: envs.MONGO_DB_NAME,
+    // });
 
     Server.start();
 };

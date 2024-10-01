@@ -76,7 +76,7 @@ export class FileSystemDatasource implements LogDatasource {
             default:
 
                 throw new Error(`${ newLog.level } is not implemented`);
-                break;
+
         };
 
         return;
@@ -96,7 +96,7 @@ export class FileSystemDatasource implements LogDatasource {
         
             default:
                 throw new Error(`${ severityLevel } is not implemented`);
-                break;
+
         };
 
     };
