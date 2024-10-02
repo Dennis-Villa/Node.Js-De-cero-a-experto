@@ -1,35 +1,104 @@
 import { Request, Response } from "express";
-
-const todos = [
-    {
-        id: 1,
-        text: 'Buy milk',
-        completedAt: new Date(),
-    },
-    {
-        id: 2,
-        text: 'Buy bread',
-        completedAt: null,
-    },
-    {
-        id: 3,
-        text: 'Buy butter',
-        completedAt: new Date(),
-    },
-];
+import { CreateTodo, CreateTodoDto, DeleteTodo, GetTodo, GetTodos, TodoRepository, UpdateTodo, UpdateTodoDto } from '../../domain';
 
 export class TodosController {
 
     constructor(
-
+        private readonly todoRepository: TodoRepository,
     ){};
 
     public getTodos = ( request: Request, response: Response ) => {
 
-        return response.json( todos );
+        return new GetTodos( this.todoRepository )
+            .execute()
+            .then( (todos) => {
+
+                return response.json( todos );
+            })
+            .catch( (error) => {
+
+                return response.status(400).json({
+                    error: `${ error }`,
+                });
+            });
+
     };
 
-    public getTodoById = ( request: Request, response: Response ) => {
+    public getTodoById = async( request: Request, response: Response ) => {
+
+        const id = Number.parseInt( request.params.id );
+
+        if ( isNaN( id ) ) {
+
+            return response.status(400).json({
+                error: 'ID argument is not a number'
+            });
+        }
+
+        return new GetTodo( this.todoRepository )
+            .execute( id )
+            .then( (todo) => {
+
+                return response.json( todo );
+            })
+            .catch( (error) => {
+
+                return response.status(400).json({
+                    error: `${ error }`,
+                });
+            });
+    };
+
+    public createTodo = async( request: Request, response: Response ) => {
+
+        const [ error, createTodoDto ] = CreateTodoDto.create( request.body );
+
+        if ( !!error ) {
+
+            return response.status(400).json({ error });
+        };
+
+        return new CreateTodo( this.todoRepository )
+            .execute( createTodoDto! )
+            .then( (todo) => {
+
+                return response.json( todo );
+            })
+            .catch( (error) => {
+
+                return response.status(400).json({
+                    error: `${ error }`,
+                });
+            });
+    };
+
+    public updateTodo = async( request: Request, response: Response ) => {
+
+        const [ error, updateTodoDto ] = UpdateTodoDto.create({
+            id: request.params.id,
+            ...request.body,
+        });
+
+        if ( !!error ) {
+
+            return response.status(400).json({ error });
+        };
+
+        return new UpdateTodo( this.todoRepository )
+            .execute( updateTodoDto! )
+            .then( (todo) => {
+
+                return response.json( todo );
+            })
+            .catch( (error) => {
+
+                return response.status(400).json({
+                    error: `${ error }`,
+                });
+            });
+    };
+
+    public deleteTodo = async( request: Request, response: Response ) => {
 
         const id = Number.parseInt( request.params.id );
 
@@ -40,92 +109,18 @@ export class TodosController {
             })
         }
 
-        const todo = todos.find( todo => todo.id === id );
+        return new DeleteTodo( this.todoRepository )
+            .execute( id )
+            .then( (todo) => {
 
-        const resp = ( todo )
-            ? response.json( todo )
-            : response.status(404).json({
-                error: `TODO with id ${ id } not found`
+                return response.json( todo );
             })
-        
-        return resp;
-    };
+            .catch( (error) => {
 
-    public createTodo = ( request: Request, response: Response ) => {
-
-        const { text } = request.body;
-
-        if ( !text ) {
-
-            return response.status(400).json({
-                error: 'Text property is required'
+                return response.status(400).json({
+                    error: `${ error }`,
+                });
             });
-        };
-
-        const newTodo = {
-            id: todos.length + 1,
-            text,
-            completedAt: new Date(),
-        };
-
-        todos.push( newTodo );
-
-        return response.json( newTodo );
-    };
-
-    public updateTodo = ( request: Request, response: Response ) => {
-
-        const id = Number.parseInt( request.params.id );
-
-        if ( isNaN( id ) ) {
-
-            return response.status(400).json({
-                error: 'ID argument is not a number'
-            });
-        };
-
-        const todo = todos.find( todo => todo.id === id );
-
-        if ( !todo ) {
-
-            return response.status(400).json({
-                error: `TODO with ID ${ id } not found`
-            });
-        };
-
-        const { text, completedAt } = request.body;
-        todo.text = text || todo.text;
-
-        ( completedAt === null )
-            ? todo.completedAt = null
-            : todo.completedAt = new Date( completedAt || todo.completedAt );
-        
-        return response.json( todo );
-    };
-
-    public deleteTodo = ( request: Request, response: Response ) => {
-
-        const id = Number.parseInt( request.params.id );
-
-        if ( isNaN( id ) ) {
-
-            return response.status(400).json({
-                error: 'ID argument is not a number'
-            })
-        }
-
-        const todoIndex = todos.findIndex( todo => todo.id === id );
-
-        if ( todoIndex === -1 ) {
-
-            return response.status(400).json({
-                error: `TODO with ID ${ id } not found`
-            });
-        };
-
-        const deletedTodo = todos.splice( todoIndex, 1 );
-        
-        return response.json( deletedTodo );
     };
 
 }
