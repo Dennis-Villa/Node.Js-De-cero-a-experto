@@ -19,7 +19,8 @@ export class TodoEntity {
         if( !id ) throw new Error( 'Id is required' );
         if( !text ) throw new Error( 'Text is required' );
 
-        let newCompletedAt = undefined;
+        // let newCompletedAt = undefined;
+        let newCompletedAt = null;
         if( !!completedAt ) {
 
             newCompletedAt = new Date( completedAt );

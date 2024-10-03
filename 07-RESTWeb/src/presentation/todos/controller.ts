@@ -1,11 +1,28 @@
 import { Request, Response } from "express";
 import { CreateTodo, CreateTodoDto, DeleteTodo, GetTodo, GetTodos, TodoRepository, UpdateTodo, UpdateTodoDto } from '../../domain';
+import { CustomError } from "../../domain/errors/custom.error";
 
 export class TodosController {
 
     constructor(
         private readonly todoRepository: TodoRepository,
     ){};
+
+    private handleError( response: Response, error: Error | CustomError ) {
+
+        if( error instanceof CustomError ) {
+
+            return response.status( 
+                error.statusCode 
+            ).json({
+                error: error.message,
+            });
+        };
+
+        return response.status(500).json({
+            error: `Internal Server Error: ${ error }`,
+        });
+    };
 
     public getTodos = ( request: Request, response: Response ) => {
 
@@ -15,12 +32,7 @@ export class TodosController {
 
                 return response.json( todos );
             })
-            .catch( (error) => {
-
-                return response.status(400).json({
-                    error: `${ error }`,
-                });
-            });
+            .catch( (error) => this.handleError( response, error ));
 
     };
 
@@ -41,12 +53,7 @@ export class TodosController {
 
                 return response.json( todo );
             })
-            .catch( (error) => {
-
-                return response.status(400).json({
-                    error: `${ error }`,
-                });
-            });
+            .catch( (error) => this.handleError( response, error ));
     };
 
     public createTodo = async( request: Request, response: Response ) => {
@@ -62,14 +69,9 @@ export class TodosController {
             .execute( createTodoDto! )
             .then( (todo) => {
 
-                return response.json( todo );
+                return response.status(201).json( todo );
             })
-            .catch( (error) => {
-
-                return response.status(400).json({
-                    error: `${ error }`,
-                });
-            });
+            .catch( (error) => this.handleError( response, error ));
     };
 
     public updateTodo = async( request: Request, response: Response ) => {
@@ -90,12 +92,7 @@ export class TodosController {
 
                 return response.json( todo );
             })
-            .catch( (error) => {
-
-                return response.status(400).json({
-                    error: `${ error }`,
-                });
-            });
+            .catch( (error) => this.handleError( response, error ));
     };
 
     public deleteTodo = async( request: Request, response: Response ) => {
@@ -115,12 +112,7 @@ export class TodosController {
 
                 return response.json( todo );
             })
-            .catch( (error) => {
-
-                return response.status(400).json({
-                    error: `${ error }`,
-                });
-            });
+            .catch( (error) => this.handleError( response, error ));
     };
 
 }
