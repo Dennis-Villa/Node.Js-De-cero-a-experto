@@ -1,14 +1,30 @@
 import { Router } from 'express';
 import { AuthController } from './controller';
-import { AuthService } from '../services/auth.service';
+import { AuthService, EmailService } from '../services';
 
 export class AuthRoutes {
 
-    static get routes(): Router {
+    constructor(
+        private readonly envs: { [ key: string ]: any },
+      ){};
+
+    get routes(): Router {
 
         const router = Router();
+
+        const emailService = new EmailService(
+            this.envs.MAILER_EMAIL,
+            this.envs.MAILER_SERVICE,
+            this.envs.MAILER_SECRET_KEY,
+        );
+
+        const authService = new AuthService(
+            this.envs.WEB_SERVICE_URL,
+            emailService,
+        );
+
         const controller = new AuthController(
-            new AuthService(),
+            authService,
         );
         
         router.post('/login', controller.loginUser );

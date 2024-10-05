@@ -16,9 +16,11 @@ async function main() {
     dbName: envs.MONGO_DB_NAME,
   });
 
+  const appRoutes = new AppRoutes( envs );
+
   const server = new Server({
     port: envs.PORT,
-    routes: AppRoutes.routes,
+    routes: appRoutes.routes,
   });
 
   server.start();
