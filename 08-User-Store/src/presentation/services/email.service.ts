@@ -18,6 +18,7 @@ export class EmailService {
     private transporter: Transporter;
 
     constructor(
+        private readonly postToProvider: boolean,
         private readonly mailerEmail: string,
         mailerService: string,
         sendEmailPassword: string,
@@ -38,6 +39,8 @@ export class EmailService {
     async sendEmail( options: SendMailOptions ): Promise<boolean> {
 
         const { to, subject, htmlBody, attachements = [] } = options;
+
+        if( !this.postToProvider ) return true;
 
         try {
 

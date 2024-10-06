@@ -119,7 +119,7 @@ export class AuthService {
             const user = await userModel.findOne({ email });
             if( !user ) throw CustomError.internalServer( 'Email not exists' );
 
-            user.emaiValidated = true;
+            user.emailValidated = true;
 
             await user.save();
 

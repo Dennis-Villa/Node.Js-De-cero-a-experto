@@ -5,8 +5,7 @@ interface Options {
   port: number;
   routes: Router;
   public_path?: string;
-}
-
+};
 
 export class Server {
 
@@ -21,10 +20,8 @@ export class Server {
     this.port = port;
     this.publicPath = public_path;
     this.routes = routes;
-  }
+  };
 
-  
-  
   async start() {
     
 
@@ -44,12 +41,10 @@ export class Server {
       res.sendFile(indexPath);
     });
     
-
     this.serverListener = this.app.listen(this.port, () => {
       console.log(`Server running on port ${ this.port }`);
     });
-
-  }
+  };
 
   public close() {
     this.serverListener?.close();
