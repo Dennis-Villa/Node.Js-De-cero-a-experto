@@ -1,4 +1,4 @@
-import { userModel } from '../../data';
+import { UserModel } from '../../data';
 import { CustomError } from '../../domain';
 import { RegisterUserDto, LoginUserDto } from '../../domain';
 import { UserEntity } from '../../domain';
@@ -41,12 +41,12 @@ export class AuthService {
 
         try {
 
-            const existUser = await userModel.findOne({
+            const existUser = await UserModel.findOne({
                 email: registerUserDto.email,
             });
             if( existUser ) throw CustomError.badRequest( 'Email already exist' );
 
-            const user = new userModel( registerUserDto );
+            const user = new UserModel( registerUserDto );
             user.password = cryptAdapter.hash( user.password );
 
             await this.sendEmailValidationLink( user.email );
@@ -77,7 +77,7 @@ export class AuthService {
 
         try {
 
-            const user = await userModel.findOne({
+            const user = await UserModel.findOne({
                 email: loginUserDto.email,
             });
             if( !user ) throw CustomError.badRequest( 'Incorrect Email or Password' );
@@ -116,7 +116,7 @@ export class AuthService {
             const { email } = payload as { email: string };
             if( !email ) throw CustomError.internalServer( 'Email not in token' );
 
-            const user = await userModel.findOne({ email });
+            const user = await UserModel.findOne({ email });
             if( !user ) throw CustomError.internalServer( 'Email not exists' );
 
             user.emailValidated = true;

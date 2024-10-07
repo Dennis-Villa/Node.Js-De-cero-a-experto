@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { JwtAdapter } from "../../config";
-import { userModel } from "../../data";
+import { UserModel } from "../../data";
 import { UserEntity } from "../../domain";
 
 export class AuthMiddleware {
@@ -24,7 +24,7 @@ export class AuthMiddleware {
                 error: 'Invalid token',
             });
 
-            const user = await userModel.findById( payload.id );
+            const user = await UserModel.findById( payload.id );
             if ( !user /*|| !user.emaiValidated*/ ) return response.status( 401 ).json({
                 error: 'Invalid user',
             });
