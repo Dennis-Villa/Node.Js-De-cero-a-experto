@@ -3,6 +3,7 @@ import { envs } from './config';
 import { GithubController } from './presentation/github/controller';
 import { GitHubService } from './presentation/services/github.service';
 import { DiscordService } from './presentation/services/discord.service';
+import { GithubSha256Middleware } from './presentation/middlewares/github-sha256.middleware';
 
 (() => {
 
@@ -20,6 +21,8 @@ function main() {
     );
 
     app.use( express.json() );
+    app.use( GithubSha256Middleware.verifySignature );
+
     app.post( '/api/github', githubController.webhookHandler );
 
     app.listen( envs.PORT, () => {
